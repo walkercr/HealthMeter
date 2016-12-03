@@ -4,6 +4,11 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.Properties;
 
+import health.dao.IUserDao;
+import health.dao.UserDao;
+import health.model.User;
+import health.services.IUserService;
+import health.services.UserService;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +31,6 @@ public class DBConfig {
     /**
      * Returns a hibernate transaction manager that manages database
      * transactions.
-     *
      * @return hibernate transaction manager
      * @throws IOException if an I/O error occurs
      */
@@ -40,7 +44,6 @@ public class DBConfig {
 
     /**
      * Returns a session factory that provides database sessions.
-     *
      * @return session factory
      * @throws IOException if an I/O error occurs
      */
@@ -51,7 +54,7 @@ public class DBConfig {
         bean.setHibernateProperties(hibernateProperties());
         bean.setPackagesToScan("health.model");
         bean.setAnnotatedClasses(
-                // model classes
+                User.class
         );
         bean.afterPropertiesSet();
         return bean.getObject();
@@ -59,14 +62,13 @@ public class DBConfig {
 
     /**
      * Returns a data source used to access the database.
-     *
      * @return database data source
      */
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/lampquest2_0");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/healthmeter");
         dataSource.setUsername("root");
         dataSource.setPassword("Caiden_14");
         return dataSource;
@@ -74,7 +76,6 @@ public class DBConfig {
 
     /**
      * Returns hibernate properties specific to application database.
-     *
      * @return hibernate properties
      */
     private static Properties hibernateProperties() {
@@ -83,5 +84,25 @@ public class DBConfig {
                 "org.hibernate.dialect.MySQL5Dialect");
         props.setProperty("hibernate.show_sql", "true");
         return props;
+    }
+
+    /**
+     * Returns a data access object for the User table.
+     * @return User data access object
+     * @throws IOException if an I/O error occurs
+     */
+    @Bean
+    public IUserDao userDao() throws IOException {
+        return new UserDao(sessionFactory());
+    }
+
+    /**
+     * Returns a user service provider.
+     * @return user service provider
+     * @throws IOException if an I/O error occurs
+     */
+    @Bean
+    public IUserService userService() throws IOException {
+        return new UserService(userDao());
     }
 }
