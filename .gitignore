@@ -1,0 +1,22 @@
+# ignore code coverage reports
+coverage
+
+# npm stuff
+node_modules
+
+# Eclipse
+.classpath
+.project
+.settings/
+/bin
+
+# Intellij
+.idea/
+*.iml
+
+# misc.
+*.log*
+/.gradle/
+/build/
+src/main/resources/build/
+src/main/resources/node_modules/
