@@ -26,16 +26,10 @@ public class UserService implements IUserService {
     }
 
     /**
-     * Returns the user id of the user with the given credentials.
-     * @param username username
-     * @param password password
-     * @return user with given credentials if the user exists, otherwise null
+     * {@inheritDoc}
      */
     public UserDto getUser(String username, String password) {
         User user = userDao.getUser(username, password);
-        if (user == null) {
-            return null;
-        }
-        return new UserDto();
+        return (user == null) ? null : new UserDto();
     }
 }
