@@ -18,7 +18,7 @@ apply plugin: 'spring-boot'
 jar {
     baseName = 'LampquestLevelBuilder'
     manifest {
-        attributes 'Main-Class': 'health.main.Application'
+        attributes 'Main-Class': 'honeydo.main.Application'
     }
 }
 

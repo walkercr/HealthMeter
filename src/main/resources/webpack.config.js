@@ -24,7 +24,7 @@ const CONFIG = {
     module: {
         preLoaders: [
             {
-                test: /\.jsx$|\.js$/,
+                test: /(\.jsx$|\.js)$/,
                 loader: 'eslint-loader',
                 //exclude: /bundle\.js$/,
                 include: PATH.SRC_DIR
@@ -32,14 +32,19 @@ const CONFIG = {
         ],
         loaders: [
             {
-                test: /\.jsx?$/,
-                loader: 'babel-loader',
+                test: /(\.js|\.jsx)$/,
+                loader: 'babel',
                 include: PATH.SRC_DIR
             },
             {
                 test: /\.s?css$/,
-                loaders: ['style', 'css', 'sass']
+                loader: 'style!css!sass?outputStyle=expanded&includePaths=' +
+                        (encodeURIComponent(path.resolve('./node_modules')))
             }
+            /*{
+                test: /\.s?css$/,
+                loaders: ['style', 'css', 'sass']
+            }*/
         ]
     },
     plugins: [HTMLWebpackPluginConfig]
